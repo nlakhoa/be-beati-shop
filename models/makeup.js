@@ -8,7 +8,7 @@ mongoose.plugin(slug)
 
 
 
-const Clothes = new Schema({
+const Makeup = new Schema({
     name: {
         type: String,
         require: true
@@ -50,8 +50,6 @@ const Clothes = new Schema({
         type: String
     }
 
-
-
 }, {
 
     timestamps: true
@@ -61,8 +59,8 @@ const Clothes = new Schema({
 
 
 var mongoose_delete = require('mongoose-delete');
-Clothes.plugin(mongoose_delete);
-Clothes.plugin(mongoose_delete, { overrideMethods: 'all' });
+Makeup.plugin(mongoose_delete);
+Makeup.plugin(mongoose_delete, { overrideMethods: 'all' });
 
 
-module.exports = mongoose.model('Clothes', Clothes, 'clothes');
+module.exports = mongoose.model('Makeup', Makeup, 'makeup');

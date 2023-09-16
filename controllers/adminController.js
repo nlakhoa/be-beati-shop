@@ -1,9 +1,9 @@
 
 const bcrypt = require('bcrypt');
 
-const Shirt = require("../models/shirt");
-const Shoes = require("../models/shoes");
-const Clothes = require("../models/clothes");
+const Perfume = require("../models/perfume");
+const FacialCare = require("../models/facialCare");
+const Makeup = require("../models/makeup");
 const User = require("../models/user");
 const Bill = require("../models/bill");
 const { MongooseObject, mutiMongooseObject } = require("../util/Mongoose");
@@ -14,12 +14,12 @@ class AdminController {
     // Lấy tất cả sản phẩm
     getProduct = async (req, res, next) => {
         if (req.body) {
-            Promise.all([Shirt.find({}), Shoes.find({}), Clothes.find({})])
-                .then(([shirt, shoes, clothes]) => {
+            Promise.all([Perfume.find({}), FacialCare.find({}), Makeup.find({})])
+                .then(([perfume, facialCare, makeup]) => {
                     res.json({
-                        shirt: mutiMongooseObject(shirt),
-                        shoes: mutiMongooseObject(shoes),
-                        clothes: mutiMongooseObject(clothes),
+                        perfume: mutiMongooseObject(perfume),
+                        facialCare: mutiMongooseObject(facialCare),
+                        makeup: mutiMongooseObject(makeup),
                     });
                 })
                 .catch(next);
@@ -34,7 +34,6 @@ class AdminController {
     }
     // Thêm user
     createUser = async (req, res, next) => {
-        console.log("req.body", req.body) // request 
         if (req.body) {
             const user = await User.findOne({ account: req.body.account })
             console.log('user', user,)
@@ -84,21 +83,21 @@ class AdminController {
                         arrProduct[i].item.sizeM -= arrProduct[i].sizeM
                         arrProduct[i].item.sizeL -= arrProduct[i].sizeS
                         arrProduct[i].item.currentSold += sold
-                        if (arrProduct[i].item.type == 'shirt') {
+                        if (arrProduct[i].item.type == 'perfume') {
                             console.log('arrProduct[i].id', arrProduct[i], arrProduct[i].id)
-                            Shirt.updateOne({ _id: arrProduct[i].id }, arrProduct[i].item).then(() => {
+                            Perfume.updateOne({ _id: arrProduct[i].id }, arrProduct[i].item).then(() => {
                                 return res.json({ success: true, message: "Thêm bill thành công" });
                             })
                                 .catch(next);
                         }
-                        else if (arrProduct[i].item.type == 'clothes') {
-                            Clothes.updateOne({ _id: arrProduct[i].id }, arrProduct[i].item).then(() => {
+                        else if (arrProduct[i].item.type == 'makeup') {
+                            Makeup.updateOne({ _id: arrProduct[i].id }, arrProduct[i].item).then(() => {
                                 return res.json({ success: true, message: "Thêm bill thành công" });
                             })
                                 .catch(next);
                         }
-                        else if (arrProduct[i].item.type == 'shoes') {
-                            Shoes.updateOne({ _id: arrProduct[i].id }, arrProduct[i].item).then(() => {
+                        else if (arrProduct[i].item.type == 'facialCare') {
+                            FacialCare.updateOne({ _id: arrProduct[i].id }, arrProduct[i].item).then(() => {
                                 return res.json({ success: true, message: "Thêm bill thành công" });
                             })
                                 .catch(next);
@@ -206,20 +205,20 @@ class AdminController {
 
     edit(req, res, next) {
         Promise.all([
-            Shirt.findById(req.params.id),
-            Shoes.findById(req.params.id),
-            Clothes.findById(req.params.id),
+            Perfume.findById(req.params.id),
+            FacialCare.findById(req.params.id),
+            Makeup.findById(req.params.id),
         ])
-            .then(([shirt, shoes, clothes]) => {
+            .then(([perfume, facialCare, makeup]) => {
                 let value;
-                if (shirt != null) {
-                    value = MongooseObject(shirt);
+                if (perfume != null) {
+                    value = MongooseObject(perfume);
                     res.json({ value });
-                } else if (shoes != null) {
-                    value = MongooseObject(shoes);
+                } else if (facialCare != null) {
+                    value = MongooseObject(facialCare);
                     res.json({ value });
                 } else {
-                    value = MongooseObject(clothes);
+                    value = MongooseObject(makeup);
                     res.json({ value });
                 }
             })
@@ -228,23 +227,22 @@ class AdminController {
 
 
     updateProduct = async (req, res, next) => {
-        console.log('req.params', req.params)
         let value
-        if (req.params.type == 'shirt') {
-            Shirt.updateOne({ _id: req.params.id }, req.body).then(() => {
-                return res.json({ success: true, message: "Update shirt thành công" });
+        if (req.params.type == 'perfume') {
+            Perfume.updateOne({ _id: req.params.id }, req.body).then(() => {
+                return res.json({ success: true, message: "Update Perfume thành công" });
             })
                 .catch(next);
         }
-        else if (req.params.type == 'clothes') {
-            Clothes.updateOne({ _id: req.params.id }, req.body).then(() => {
-                return res.json({ success: true, message: "Update shirt thành công" });
+        else if (req.params.type == 'makeup') {
+            Makeup.updateOne({ _id: req.params.id }, req.body).then(() => {
+                return res.json({ success: true, message: "Update Perfume thành công" });
             })
                 .catch(next);
         }
-        else if (req.params.type == 'shoes') {
-            Shoes.updateOne({ _id: req.params.id }, req.body).then(() => {
-                return res.json({ success: true, message: "Update shirt thành công" });
+        else if (req.params.type == 'facialCare') {
+            FacialCare.updateOne({ _id: req.params.id }, req.body).then(() => {
+                return res.json({ success: true, message: "Update Perfume thành công" });
             })
                 .catch(next);
         }
@@ -274,9 +272,9 @@ class AdminController {
 
     async createProduct(req, res, next) {
         switch (req.body.type) {
-            case "shirt":
+            case "Perfume":
                 if (req.body) {
-                    req.body = new Shirt(req.body);
+                    req.body = new Perfume(req.body);
                     req.body
                         .save()
                         .then(() =>
@@ -293,9 +291,9 @@ class AdminController {
                         mess: "Thông tin sản phẩm không đủ, vui lòng nhập đủ",
                     });
                 }
-            case "shoes":
+            case "facialCare":
                 if (req.body) {
-                    req.body = new Shoes(req.body);
+                    req.body = new FacialCare(req.body);
                     req.body
                         .save()
                         .then(() =>
@@ -313,9 +311,9 @@ class AdminController {
                     });
                 }
 
-            case "clothes":
+            case "makeup":
                 if (req.body) {
-                    req.body = new Clothes(req.body);
+                    req.body = new Makeup(req.body);
                     req.body
                         .save()
                         .then(() =>
@@ -350,23 +348,23 @@ class AdminController {
     }
 
     async deleteProduct(req, res, next) {
-        if (req.params.type == 'shirt') {
-            Shirt.deleteOne({ _id: req.params.id }).then(() => {
-                return res.json({ success: true, message: "Delete shirt thành công" });
+        if (req.params.type == 'perfume') {
+            Perfume.deleteOne({ _id: req.params.id }).then(() => {
+                return res.json({ success: true, message: "Delete Perfume thành công" });
             })
                 .catch(next);
         }
-        else if (req.params.type == 'clothes') {
-            await Clothes.deleteOne({ _id: req.params.id })
-            Clothes.deleteOne({ _id: req.params.id }).then(() => {
-                return res.json({ success: true, message: "Delete clothes thành công" });
+        else if (req.params.type == 'makeup') {
+            await Makeup.deleteOne({ _id: req.params.id })
+            Makeup.deleteOne({ _id: req.params.id }).then(() => {
+                return res.json({ success: true, message: "Delete Makeup thành công" });
             })
                 .catch(next);
         }
-        else if (req.params.type == 'shoes') {
-            await Shoes.deleteOne({ _id: req.params.id })
-            Shoes.deleteOne({ _id: req.params.id }).then(() => {
-                return res.json({ success: true, message: "Delete shoes thành công" });
+        else if (req.params.type == 'facialCare') {
+            await FacialCare.deleteOne({ _id: req.params.id })
+            FacialCare.deleteOne({ _id: req.params.id }).then(() => {
+                return res.json({ success: true, message: "Delete FacialCare thành công" });
             })
                 .catch(next);
         }

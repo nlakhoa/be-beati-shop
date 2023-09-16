@@ -8,7 +8,7 @@ mongoose.plugin(slug)
 
 
 
-const Shirt = new Schema({
+const FacialCare = new Schema({
     name: {
         type: String,
         require: true
@@ -22,7 +22,6 @@ const Shirt = new Schema({
     price: {
         type: String,
     },
-
     sale: {
         type: String
     },
@@ -52,6 +51,7 @@ const Shirt = new Schema({
     }
 
 
+
 }, {
 
     timestamps: true
@@ -61,7 +61,7 @@ const Shirt = new Schema({
 
 
 var mongoose_delete = require('mongoose-delete');
-Shirt.plugin(mongoose_delete);
-Shirt.plugin(mongoose_delete, { overrideMethods: 'all' });
+FacialCare.plugin(mongoose_delete);
+FacialCare.plugin(mongoose_delete, { overrideMethods: 'all' });
 
-module.exports = mongoose.model('Shirt', Shirt, 'shirt');
+module.exports = mongoose.model('FacialCare', FacialCare, 'facialCare');

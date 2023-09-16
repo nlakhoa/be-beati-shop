@@ -9,7 +9,6 @@ mongoose.plugin(slug)
 
 
 const Bill = new Schema({
-
     user: {
         type: String
     },
