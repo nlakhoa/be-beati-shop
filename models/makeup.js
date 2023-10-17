@@ -49,6 +49,10 @@ const Makeup = new Schema({
     updateDate: {
         type: String
     }
+    ,
+    description: {
+        type: String
+    }
 
 }, {
 

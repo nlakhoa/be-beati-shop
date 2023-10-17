@@ -49,8 +49,10 @@ const Perfume = new Schema({
     },
     updateDate: {
         type: String
+    },
+    description: {
+        type: String
     }
-
 
 }, {
 
