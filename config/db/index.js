@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
-
+const URI = "mongodb+srv://anhkhoa999go:PYCe83DKEoH6jDZr@shop.wr5kfoz.mongodb.net/?retryWrites=true&w=majority"
 async function connect() {
   try {
-    await mongoose.connect('mongodb://0.0.0.0:27017/windy', {
+    await mongoose.connect(URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
